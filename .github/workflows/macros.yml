@@ -1,0 +1,31 @@
+name: funless-macros
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "macros/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "macros/**"
+
+env:
+  CARGO_TERM_COLOR: always
+  working-directory: ./macros
+
+jobs:
+  rust_test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Update rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          components: rustfmt, clippy
+      - name: clippy & fmt
+        working-directory: ${{ env.working-directory }}
+        run: |
+          cargo clippy --all-features --all-targets
+          rustfmt --edition 2021 --check src/*.rs
