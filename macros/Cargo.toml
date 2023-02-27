@@ -1,0 +1,17 @@
+[package]
+name = "funless-macros"
+version = "0.1.0"
+edition = "2021"
+authors = [ "the FunLess authors" ]
+license = "Apache-2.0"
+description = "derive macros to build Rust FunLess functions"
+readme = "README.md"
+rust-version = "1.67.0"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+quote = "1.0"
+proc-macro2 = "1.0"
+proc-macro-error = "1.0"
