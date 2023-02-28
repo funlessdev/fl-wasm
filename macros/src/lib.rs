@@ -25,7 +25,7 @@ pub fn derive_function(_input: TokenStream) -> TokenStream {
 
             if json.is_err() {
                 insert_error("input JSON not well-formatted");
-                return 0;
+                return 1;
             }
             // unwrap is safe, since we checked for errors above
             let json = json.unwrap();
@@ -38,12 +38,12 @@ pub fn derive_function(_input: TokenStream) -> TokenStream {
                 Ok(data) => {
                     let resp = data.to_string();
                     insert_response(&resp);
-                    1
+                    0
                 }
                 Err(e) => {
                     let errmsg = e.to_string();
                     insert_error(&errmsg);
-                    0
+                    1
                 }
             }
         }
