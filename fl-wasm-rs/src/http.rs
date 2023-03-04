@@ -1,5 +1,5 @@
 //! imports/exports for WebAssembly functions
-// #![cfg(target_arch = "wasm32")]
+#![cfg(target_arch = "wasm32")]
 
 use crate::prelude::console_log;
 
