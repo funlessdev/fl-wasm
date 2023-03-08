@@ -1,12 +1,16 @@
 [package]
-name = "funless-macros"
+name = "fl-wasm-rs-macros"
 version = "0.1.0"
 edition = "2021"
 authors = [ "the FunLess authors" ]
 license = "Apache-2.0"
 description = "derive macros to build Rust FunLess functions"
 readme = "README.md"
-rust-version = "1.67.0"
+homepage = "https://github.com/funlessdev/fl-wasm"
+repository = "https://github.com/funlessdev/fl-wasm"
+documentation = "https://docs.rs/fl-wasm-rs-macros"
+# MSRV
+rust-version = "1.65"
 
 [lib]
 proc-macro = true

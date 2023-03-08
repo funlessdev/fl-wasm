@@ -1,5 +1,5 @@
 // re-export macros
-pub use funless_macros::FLFunction;
+pub use fl_wasm_rs_macros::FLFunction;
 
 // re-export error
 pub use crate::error::FLError;
@@ -15,7 +15,7 @@ cfg_if::cfg_if! {
         // but it is needed to fix compile errors when building for other targets
         pub fn console_log(_s: &str) {}
         pub struct FLRequest<'a> {
-            body: &'a str
+            pub body: &'a str
         }
         pub struct FLResponse<'a> {
             pub body: &'a str,
