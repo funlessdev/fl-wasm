@@ -1,5 +1,5 @@
 // re-export macros
-pub use funless_macros::FLFunction;
+pub use fl_wasm_rs_macros::FLFunction;
 
 // re-export error
 pub use crate::error::FLError;

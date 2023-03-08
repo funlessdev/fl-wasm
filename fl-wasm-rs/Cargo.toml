@@ -2,6 +2,7 @@
 name = "fl-wasm-rs"
 version = "0.1.0"
 edition = "2021"
+authors = [ "The FunLess Team" ]
 license = "Apache-2.0"
 description = "Runtime library for FunLess functions"
 homepage = "https://github.com/funlessdev/fl-wasm"
@@ -14,7 +15,7 @@ rust-version = "1.65"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-funless-macros = {path = "../macros"}
+fl-wasm-rs-macros = {path = "../macros"}
 thiserror = "1.0"
 cfg-if = "1.0"
 serde_json = "1.0.85"
