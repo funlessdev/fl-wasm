@@ -14,35 +14,35 @@ cfg_if::cfg_if! {
         // this code is non-functional, since functions only run in wasm32,
         // but it is needed to fix compile errors when building for other targets
         pub fn console_log(_s: &str) {}
-        pub struct FLRequest<'a> {
-            pub body: &'a str
+        pub struct FLRequest {
+            pub body: String
         }
-        pub struct FLResponse<'a> {
-            pub body: &'a str,
+        pub struct FLResponse {
+            pub body: String,
             pub status: u16
         }
-        impl<'a> FLRequest<'a> {
-            pub fn new() -> FLRequest<'a> {
-                FLRequest { body: "" }
+        impl<'a> FLRequest {
+            pub fn new() -> FLRequest {
+                FLRequest { body: String::from("") }
             }
-            pub fn with_method(self, _method: &'a str) -> FLRequest<'a> {
+            pub fn with_method(self, _method: String) -> FLRequest {
                 self
             }
 
-            pub fn with_header(self, _key: &'a str, _value: &'a str) -> FLRequest<'a> {
+            pub fn with_header(self, _key: String, _value: String) -> FLRequest {
                 self
             }
 
-            pub fn with_uri(self, _uri: &'a str) -> FLRequest<'a> {
+            pub fn with_uri(self, _uri: String) -> FLRequest {
                 self
             }
 
-            pub fn with_body(self, _body: &'a str) -> FLRequest<'a> {
+            pub fn with_body(self, _body: String) -> FLRequest {
                 self
             }
 
-            pub fn send(self) -> FLResponse<'a> {
-                FLResponse { body: "", status: 0 }
+            pub fn send(self) -> FLResponse {
+                FLResponse { body: String::from(""), status: 0 }
             }
         }
     }

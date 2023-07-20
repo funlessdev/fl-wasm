@@ -15,14 +15,17 @@ fn fl_main(input: serde_json::Value) -> FLResult {
     match serde_json::from_value::<Req>(input) {
         Ok(r) => {
             let req: FLRequest = FLRequest::new()
-                .with_method(&r.method)
-                .with_body(&r.body)
-                .with_uri(&r.url)
-                .with_header("Content-Type", "application/json");
+                .with_method(r.method)
+                .with_body(r.body)
+                .with_uri(r.url)
+                .with_header(
+                    String::from("Content-Type"),
+                    String::from("application/json"),
+                );
 
             let resp = req.send();
             let status = resp.status;
-            let body = resp.body;
+            let body = resp.body.as_str();
 
             let json: Result<serde_json::Value, serde_json::Error> = serde_json::from_str(
                 &format!(r#"{{"payload": {}, "status": "{}"}}"#, body, status),

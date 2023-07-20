@@ -1,8 +1,6 @@
 //! imports/exports for WebAssembly functions
 #![cfg(target_arch = "wasm32")]
 
-use crate::prelude::console_log;
-
 #[link(wasm_import_module = "fl_imps")]
 extern "C" {
     fn __http_request(
@@ -25,30 +23,30 @@ enum HTTPMethod {
     PUT = 2,
     DELETE = 3,
 }
-pub struct FLRequest<'a> {
+pub struct FLRequest {
     method: HTTPMethod,
-    body: &'a str,
-    headers: Vec<(&'a str, &'a str)>,
-    uri: &'a str,
+    body: String,
+    headers: Vec<(String, String)>,
+    uri: String,
 }
 
-pub struct FLResponse<'a> {
-    pub body: &'a str,
+pub struct FLResponse {
+    pub body: String,
     pub status: u16,
 }
 
-impl<'a> FLRequest<'a> {
-    pub fn new() -> FLRequest<'a> {
+impl FLRequest {
+    pub fn new() -> FLRequest {
         FLRequest {
             method: HTTPMethod::GET,
-            body: "",
+            body: String::from(""),
             headers: vec![],
-            uri: "",
+            uri: String::from(""),
         }
     }
 
-    pub fn with_method(mut self, method: &'a str) -> FLRequest<'a> {
-        self.method = match method {
+    pub fn with_method(mut self, method: String) -> FLRequest {
+        self.method = match method.as_str() {
             "GET" => HTTPMethod::GET,
             "POST" => HTTPMethod::POST,
             "PUT" => HTTPMethod::PUT,
@@ -58,18 +56,18 @@ impl<'a> FLRequest<'a> {
         self
     }
 
-    pub fn with_header(mut self, key: &'a str, value: &'a str) -> FLRequest<'a> {
+    pub fn with_header(mut self, key: String, value: String) -> FLRequest {
         let couple = (key, value);
         self.headers.push(couple);
         self
     }
 
-    pub fn with_uri(mut self, uri: &'a str) -> FLRequest<'a> {
+    pub fn with_uri(mut self, uri: String) -> FLRequest {
         self.uri = uri;
         self
     }
 
-    pub fn with_body(mut self, body: &'a str) -> FLRequest<'a> {
+    pub fn with_body(mut self, body: String) -> FLRequest {
         self.body = body;
         self
     }
@@ -79,7 +77,7 @@ impl<'a> FLRequest<'a> {
         Having a separate function for this allows us to build the request in a clean way,
         simply converting it to raw pointers when it's ready.
     */
-    pub fn send(self) -> FLResponse<'a> {
+    pub fn send(self) -> FLResponse {
         use std::slice;
         use std::str;
 
@@ -112,7 +110,7 @@ impl<'a> FLRequest<'a> {
             let size = usize::try_from(length).unwrap_or(0);
 
             let body_slice = slice::from_raw_parts(response_ptr, size);
-            let body = str::from_utf8(body_slice).unwrap_or("");
+            let body = str::from_utf8(body_slice).unwrap_or("").to_string();
             FLResponse { status, body }
         };
         response
