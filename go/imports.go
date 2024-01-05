@@ -1,6 +1,7 @@
-package fl_wasm
+package main
 
 import (
+	"encoding/binary"
 	"unsafe"
 )
 
@@ -77,18 +78,33 @@ func HttpRequest(
 	method string,
 	header string,
 	body string,
-) (string, string) {
+) ([]byte, uint16) {
 	// Create a buffer for the uri
 	uriBuf := []byte(uri)
-	uriPtr := unsafe.Pointer(&uriBuf[0])
+	var uriPtr unsafe.Pointer
+	if len(uriBuf) > 0 {
+		uriPtr = unsafe.Pointer(&uriBuf[0])
+	} else {
+		uriPtr = unsafe.Pointer(&uriBuf)
+	}
 
 	// Create a buffer for the header
 	headerBuf := []byte(header)
-	headerPtr := unsafe.Pointer(&headerBuf[0])
+	var headerPtr unsafe.Pointer
+	if len(headerBuf) > 0 {
+		headerPtr = unsafe.Pointer(&headerBuf[0])
+	} else {
+		headerPtr = unsafe.Pointer(&headerBuf)
+	}
 
 	// Create a buffer for the body
 	bodyBuf := []byte(body)
-	bodyPtr := unsafe.Pointer(&bodyBuf[0])
+	var bodyPtr unsafe.Pointer
+	if len(bodyBuf) > 0 {
+		bodyPtr = unsafe.Pointer(&bodyBuf[0])
+	} else {
+		bodyPtr = unsafe.Pointer(&bodyBuf)
+	}
 
 	// turn the method into a size (GET = 0, POST = 1, PUT = 2, DELETE = 3)
 	var methodSize size
@@ -112,7 +128,7 @@ func HttpRequest(
 	responsePtr := unsafe.Pointer(&responseBuf[0])
 
 	// Create a buffer for the status
-	statusBuf := make([]byte, 4)
+	statusBuf := make([]byte, 2)
 	statusPtr := unsafe.Pointer(&statusBuf[0])
 
 	// Call the imported function to fill the buffer.
@@ -132,10 +148,10 @@ func HttpRequest(
 	response := append([]byte(nil), responseSlice...)
 
 	// Create a new slice based on the original buffer and its length.
-	statusSlice := statusBuf[:4]
+	statusSlice := statusBuf[:2]
 
 	// Create a new byte slice from the slice.
 	status := append([]byte(nil), statusSlice...)
 
-	return string(response), string(status)
+	return response, binary.LittleEndian.Uint16(status)
 }
