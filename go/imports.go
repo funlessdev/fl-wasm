@@ -1,4 +1,4 @@
-package main
+package fl_wasm
 
 import (
 	"encoding/binary"
